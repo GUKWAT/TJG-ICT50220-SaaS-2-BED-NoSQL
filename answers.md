@@ -125,7 +125,7 @@ Query Solution:
 Screen Shot:
 
 > ```markdown
-![Embedding an Image Example](./assets/step-N-XXX.png)
+![step-3](./image/step-3-001.png)
 ```
 
 # Step 4: CRUD - Create
@@ -149,7 +149,7 @@ Query Solution:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+	db.movies.find({})
 ```
 	
 ## 5.2 Retrieve all films written by…
@@ -159,12 +159,13 @@ Query Solution:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+    db.movies.find({ writer: "Quentin Tarantino" })
+
 ```
 
 Screen Shot:
 
-> Replace this line with a screenshot of the output from the writer query.
+> ![step-5](./image/step-5-002.png)
 
 ## 5.3 Retrieve films with actor(s)…
 
@@ -173,7 +174,7 @@ Screen Shot:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+	db.movies.find({ actors: "Brad Pitt" })
 ```
 	
 ## 5.4 Retrieve films from a franchise…
@@ -183,7 +184,7 @@ Query Solution:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+	db.movies.find({ franchise: "The Hobbit" })
 ```
 	
 ## 5.5 Retrieve films before/after…
@@ -193,12 +194,18 @@ Query Solution:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+	db.movies.find({
+  $or: [
+    { year: { $lt: 1995 } },
+    { year: { $gt: 2010 } }
+  ]
+})
+
 ```
 	
 Screen Shot:
 
-> Replace this line with a screenshot of the output from the range query.
+> ![step-5](./image/step-5-003.png)
 
 ## 5.6 Retrieve films longer than…
 
@@ -219,8 +226,21 @@ Query Solution:
 Query Solution:
 
 ```js
-	db.collection_name.find();
-```
+	db.movies.updateOne(
+		{title: "The Hobbit: The Desolation of Smaug"},
+		{$set: { synopsis: "The dwarves, along with Bilbo Baggins and Gandalf the Grey, continue their quest to reclaim Erebor, their homeland, from Smaug. Bilbo Baggins is in possession of a mysterious and magical ring."} 
+		}
+	
+	db.movies.updateOne(
+		{title: "The Hobbit: The Desolation of Smaug"},
+		{$set: { synopsis: "The dwarves, along with Bilbo Baggins and Gandalf the Grey, continue their quest to reclaim Erebor, their homeland, from Smaug. Bilbo Baggins is in possession of a mysterious and magical ring."} 
+		}
+)
+
+
+
+
+
 	
 ## 6.2 Update document with an actor
 
