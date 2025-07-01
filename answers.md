@@ -95,8 +95,7 @@ Gives:
 Connection String:
 
 ```
-I used the MongoDB Atlas  which is the cloud 
-Created a project and Clicked on browse collections
+  mongodb+srv://<credentials>@cluster0.mf64jwj.mongodb.net/myFirstDatabase?appName=mongosh+2.5.3
 
 ```
 	
@@ -106,27 +105,29 @@ Created a project and Clicked on browse collections
 
 Query Solution:
 
-```Clicked on Create Data and named the database and collection movies
+```
+use saas_bed_portfolio_2024s2
+
 ```
 
 ### 3.3 Collection Creation
 
 - Create a new collection named movies and insert ...
 
-```json
-	{
-  "Title": "Fight Club",
-  "Writer": "Chuck Palahniuk",
-  "Year": 1999,
-  "Actors": ["Brad Pitt", "Edward Norton"]
-}
+```js
+	db.movies.insertOne({
+  title: "Fight Club",
+  writer: "Chuck Palahniuk",
+  year: 1999,
+  actors: ["Brad Pitt", "Edward Norton"]
+})
+
 ```
 
 Screen Shot:
 
-> ```markdown
-![step-3](./image/step-3-001.png)
-```
+
+ >![step-3](./image/Step3-001.png)
 
 # Step 4: CRUD - Create
 
@@ -137,7 +138,99 @@ Screen Shot:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+db.movies.insertMany([
+  {
+    title: "The Hobbit: An Unexpected Journey",
+    writer: "J.R.R. Tolkien",
+    year: 2012,
+    franchise: "The Hobbit",
+    "running time": "169min",
+    budget: "$200m",
+    "box office": "$1.015bn"
+  },
+  {
+    title: "Yet Another Fake Film Name"
+  },
+  {
+    title: "The Hobbit: The Desolation of Smaug",
+    writer: "J.R.R. Tolkien",
+    year: 2013,
+    franchise: "The Hobbit",
+    "running time": "161min",
+    budget: "$230m",
+    "box office": "$959.3m"
+  },
+  {
+    title: "Inglorious Basterds",
+    writer: "Quentin Tarantino",
+    year: 2009,
+    actors: ["Brad Pitt", "Diane Kruger", "Eli Roth"],
+    "running time": "153min",
+    budget: "$70m",
+    "box office": "$321.5m"
+  }
+])
+
+db.movies.insertMany([
+  {
+    title: "Star Trek: Nemesis",
+    year: 2002,
+    writer: ["John Logan", "Rick Berman", "Brent Spiner"],
+    summary: "A clone of Picard, created by the Romulans, assassinates the Romulan Senate, assumes absolute power, and lures Picard and the Enterprise to Romulus under the false pretext of a peace overture.",
+    franchise: "Star Trek",
+    "running time": "117min",
+    budget: "$60m",
+    "box office": "$67.3m"
+  },
+  {
+    title: "Avatar"
+  },
+  {
+    title: "Pee Wee Herman's Big Adventure",
+    "running time": "91min",
+    budget: "$7m",
+    "box office": "$40.9m"
+  },
+  {
+    title: "Pulp Fiction",
+    writer: "Quentin Tarantino",
+    year: 1994,
+    actors: ["John Travolta", "Uma Thurman"],
+    "running time": "154min",
+    budget: "$8m",
+    "box office": "$213.9m"
+  }
+])
+
+db.movies.insertMany([
+  {
+    title: "Dummy Film Name"
+  },
+  {
+    title: "The Hobbit: The Battle of the Five Armies",
+    writer: "J.R.R. Tolkien",
+    year: 2012,
+    franchise: "The Hobbit",
+    synopsis: "Bilbo and Company are forced to engage in a war against an array of combatants and keep the Lonely Mountain from falling into the hands of a rising darkness.",
+    "running time": "144min",
+    budget: "$250m",
+    "box office": "$940.3m"
+  },
+  {
+    title: "Another Fictional Film Name"
+  },
+  {
+    title: "Star Trek VI: The Undiscovered Country",
+    year: 1991,
+    franchise: "Star Trek",
+    writer: ["Nicholas Meyer", "Denny Martin Flinn"],
+    summary: "When Qo'noS' moon Praxis (the Klingon Empire's chief energy source) is devastated by an explosion, caused by over-mining, the catastrophe also contaminating Qo'noS' atmosphere, the Klingons make peace overtures to the Federation. While on the way to Earth for a peace summit, the Klingon Chancellor is assassinated by Enterprise crewmen, and Kirk and McCoy are held accountable by the Chancellor's Chief of Staff and sentenced to life on a prison planet. Spock attempts to prove Kirk's innocence, but in doing so, uncovers a massive conspiracy against the peace process with participants from both sides.",
+    "running time": "110min",
+    budget: "$30m",
+    "box office": "$96.8m"
+  }
+])
+
 ```
 
 # Step 5: CRUD - Retrieve Queries
@@ -165,7 +258,7 @@ Query Solution:
 
 Screen Shot:
 
-> ![step-5](./image/step-5-002.png)
+> ![step-5](./image/step5-002.png)
 
 ## 5.3 Retrieve films with actor(s)…
 
@@ -194,18 +287,14 @@ Query Solution:
 Query Solution:
 
 ```js
-	db.movies.find({
-  $or: [
-    { year: { $lt: 1995 } },
-    { year: { $gt: 2010 } }
-  ]
-})
+	db.movies.find({ $or: [ { year: { $lt: 1995 } }, { year: { $gt: 2010 } } ] })
 
 ```
 	
 Screen Shot:
 
-> ![step-5](./image/step-5-003.png)
+> ![step-5](./image/step5-001.png)
+> ![step-5](./image/step5-002.png)
 
 ## 5.6 Retrieve films longer than…
 
@@ -214,7 +303,8 @@ Screen Shot:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+	db.movies.find({ running_time: { $gt: 100 } })
+
 ```
 
 # Step 6: CRUD - Updates
@@ -237,11 +327,6 @@ Query Solution:
 		}
 )
 
-
-
-
-
-	
 ## 6.2 Update document with an actor
 
 - Add the following actors to the indicated films using one or more queries in the order provided...
@@ -249,12 +334,42 @@ Query Solution:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+	db.movies.updateOne(
+  { title: "Pulp Fiction" },
+  { $set: { actors: ["Samuel L. Jackson"] } }
+)
+
+db.movies.updateOne(
+  { title: "Star Trek VI: The Undiscovered Country" },
+  { $set: { actors: [
+    "William Shatner", "Leonard Nimoy", "DeForest Kelley", 
+    "James Doohan", "Christopher Plummer"
+  ] } }
+)
+
+db.movies.updateOne(
+  { title: "Star Trek: Nemesis" },
+  { $set: { actors: [
+    "Patrick Stewart", "Jonathan Frakes", "Brent Spiner", 
+    "LeVar Burton", "Michael Dorn", "Gates McFadden", "Marina Sirtis"
+  ] } }
+)
+
+db.movies.updateOne(
+  { title: "Star Trek VI: The Undiscovered Country" },
+  { $set: { actors: [
+    "Walter Koenig", "Nichelle Nichols", "George Takei", 
+    "Kim Cattrall", "David Warner"
+  ] } }
+)
+
 ```
 
 Screen Shot:
 
-> Replace this line with a screenshot of the output from the update query.
+![step-6](./image/step6-001.png)
+![step-6](./image/step6-002.png)
+![step-6](./image/step6-003.png)
 
 # Step 7: CRUD – Searches
 
@@ -267,7 +382,7 @@ Performing searches on collections.
 Query Solution:
 
 ```js
-	db.collection_name.find();
+	db.movies.find({ title: /F/ })
 ```
 
 ## 7.2 Searching for synopses with …
@@ -277,7 +392,8 @@ Query Solution:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+	db.movies.find({ synopsis: /Gandalf/ })
+
 ```
 
 ## 7.3 Searching for synopses with… and not …
@@ -287,7 +403,9 @@ Query Solution:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+	db.movies.find({synopsis: /Bilbo/, synopsis: { $not: /Gandalf/ }})
+
+
 ```
 
 ## 7.4 Searching for synopses with … or …
@@ -297,12 +415,15 @@ Query Solution:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+	db.movies.find({ $or: [ { synopsis: /Klingon/ }, { synopsis: /Romulan/ }]
+})
+
+
 ```
 
 Screen Shot:
 
-> Replace this line with a screenshot of the output from the synopses search.
+> ![step-7](./image/step7-001.png)
 
 ## 7.5 Searching for synopses with … and …
 
@@ -311,7 +432,13 @@ Screen Shot:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+	db.movies.find({
+  $and: [
+    { synopsis: /gold/ },
+    { synopsis: /dragon/ }
+  ]
+})
+
 ```
 
 # Step 8: CRUD - Deletions
@@ -325,12 +452,13 @@ This step requires you to remove movies from the collection.
 Query Solution:
 
 ```js
-	db.collection_name.find();
+	db.movies.deleteOne({ title: "Pee Wee Herman's Big Adventure" })
+	
 ```
 
 Screen Shot:
 
-> Replace this line with a screenshot of the output from the delete query.
+ > ![step-8](./image/step8-001.png)
 
 ## 8.2 Remove a movie by ID…
 
@@ -339,7 +467,10 @@ Screen Shot:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+	db.movies.find({ title: "Yet Another Fake Film Name" })
+	db.movies.deleteOne({ _id: ObjectId("68638c98b481048adf748a61") })
+
+
 ```
 
 ## 8.3 Removing multiple movies…
@@ -349,7 +480,9 @@ Query Solution:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+	db.movies.find({ title: /Fiction/ })
+	db.movies.deleteMany({ title: /Fiction/ })
+
 ```
 
 # Step 9: NoSQL Indexes
@@ -363,13 +496,13 @@ Using the movies collection, create the indexes to match the following condition
 Query Solution:
 
 ```js
-	db.collection_name.find();
+	db.movies.createIndex({ title: 1 })
+
 ```
 
 Screen Shot:
 
-> Replace this line with a screenshot of the output from the creation index.
-
+> ![step-9](./image/step9-001.png)
 ## 9.2 Indexing multiple fields
 
 - Create a text index on the `title ` and `franchise` fields.
@@ -377,7 +510,10 @@ Screen Shot:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+	db.movies.createIndex(
+  { title: "text", franchise: "text" }
+)
+
 ```
 
 
@@ -388,13 +524,19 @@ Query Solution:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+	db.movies.find({ title: /Star/ }).explain("executionStats")
+
 ```
 
 Screen Shot:
 
-> Replace this line with a screenshot of the output from the execution plan.
+> ![step-9](./image/step9-002.png)
 
+> ![step-9](./image/step9-003.png)
+
+> ![step-9](./image/step9-004.png)
+
+> ![step-9](./image/step9-005.png)
 # Step 10: Aggregation
 
 In this step you will be aggregating data within a collection.
@@ -406,7 +548,8 @@ In this step you will be aggregating data within a collection.
 Query Solution:
 
 ```js
-	db.collection_name.find();
+	db.movies.countDocuments({ franchise: "Star Trek" })
+
 ```
 
 ## 10.2 Mean box office takings…
@@ -416,7 +559,8 @@ Query Solution:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+	db.movies.aggregate([{$group: {_id: null, averageBoxOffice: { $avg: "$boxOffice" }} }])
+
 ```
 
 ## 10.3 Profit earnings
@@ -426,12 +570,20 @@ Query Solution:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+	db.movies.aggregate([
+  {
+    $project: {
+      title: 1,
+      profit: { $subtract: ["$boxOfficeNumber", "$budgetNumber"] }
+    }
+  }
+])
+
 ```
 
 Screen Shot:
 
-> Replace this line with a screenshot of the output from the profit calculation query.
+> ![step-10](./image/step10-001.png)
 
 ## 10.4 Grouping data
 
@@ -440,7 +592,15 @@ Screen Shot:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+    db.movies.aggregate([
+  {
+    $group: {
+      _id: "$franchise",
+      movieCount: { $sum: 1 }
+    }
+  }
+])
+	
 ```
 
 # Step 11: Triggers
@@ -454,7 +614,19 @@ Using the movies collection, we are now going to create triggers to provide an a
 Query Solution:
 
 ```js
-	db.collection_name.find();
+exports = async function(changeEvent) {
+  const mongodb = context.services.get("Cluster0");
+  const db = mongodb.db("saas_bed_portfolio_2024s2");
+  const audit = db.collection("movie_audit");
+
+  await audit.insertOne({
+    action: "INSERT",
+    action_date: new Date(),
+    original_data: changeEvent.fullDocument
+  });
+};
+
+
 ```
 
 ## 11.2 Testing the insert trigger works correctly
@@ -464,7 +636,24 @@ Query Solution:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+	db.movie_audit.find().pretty();
+
+	db.movies.insertOne({
+  title: "Jeffrey",
+  writer: "Paul Rudnick",
+  year: 1995,
+  actors: [
+    "Sigourney Weaver",
+    "Patrick Stewart",
+    "Michael T. Weiss",
+    "Steven Weber",
+    "Bryan Batt"
+  ],
+  "box office": "$3.5 million",
+  "running time": "92 mins"
+});
+
+
 ```
 
 ## 11.3 Create trigger for updated data
@@ -474,12 +663,26 @@ Query Solution:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+exports = async function(changeEvent) {
+  const mongodb = context.services.get("Cluster0");
+  const db = mongodb.db("saas_bed_portfolio_2024s2");
+  const audit = db.collection("movie_audit");
+
+  await audit.insertOne({
+    action: "UPDATE",
+    action_date: new Date(),
+    original_data: changeEvent.fullDocumentBeforeChange,
+    data: changeEvent.fullDocument
+  });
+};
+
+	
 ```
 
 Screen Shot:
 
-> Replace this line with a screenshot of the output from the creation of the trigger.
+> ![step-11](./image/step11-001.png)
+> ![step-11](./image/step11-002.png)
 
 ## 11.4 Testing the update trigger works correctly
 
@@ -488,7 +691,35 @@ Screen Shot:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+	db.movies.updateOne(
+  { title: "Avatar" },
+  {
+    $set: {
+      budget: "$237 million",
+      "running time": "162 minutes",
+      "box office": "$2.923 billion",
+      franchise: "Avatar"
+    }
+  }
+);
+
+db.movies.updateOne(
+  { title: "Avatar" },
+  {
+    $set: {
+      actors: [
+        "Sam Worthington",
+        "Zoe Saldana",
+        "Stephen Lang",
+        "Michelle Rodriguez",
+        "Sigourney Weaver"
+      ]
+    }
+  }
+);
+
+db.movie_audit.find({ action: "UPDATE" }).pretty();
+
 ```
 
 ## 11.5 Create trigger for deleted data
@@ -498,7 +729,18 @@ Query Solution:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+	exports = async function(changeEvent) {
+  const mongodb = context.services.get("Cluster0");
+  const db = mongodb.db("saas_bed_portfolio_2024s2");
+  const audit = db.collection("movie_audit");
+
+  await audit.insertOne({
+    action: "DELETE",
+    action_date: new Date(),
+    original_data: changeEvent.fullDocumentBeforeChange
+  });
+};
+
 ```
 
 ## 11.6 Testing the delete trigger works correctly
@@ -508,7 +750,10 @@ Query Solution:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+	db.movies.deleteMany({ title: /Dummy/ });
+	db.movie_audit.find({ action: "DELETE" }).pretty();
+
+
 ```
 
 ## 11.7 Verify the log contains data…
@@ -518,12 +763,14 @@ Query Solution:
 Query Solution:
 
 ```js
-	db.collection_name.find();
+	db.movie_audit.find().pretty();
 ```
 
 Screen Shot:
 
-> Replace this line with a screenshot of the output from the movie audit log.
+> ![step-11](./image/step11-003.png)
+> ![step-11](./image/step11-004.png)
+> ![step-11](./image/step11-005.png)
 
 
 
@@ -532,7 +779,7 @@ Screen Shot:
 What is the URL for your GitHub (or equivalent) repository for this assessment?
 
 ```text
-add url here
+https://github.com/GUKWAT/TJG-ICT50220-SaaS-2-BED-NoSQL
 ```
 
 # END
